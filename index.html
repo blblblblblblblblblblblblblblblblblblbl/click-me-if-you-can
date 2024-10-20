@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add Google Font Link here -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
+    <title>Click me if you can</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Honk', sans-serif;
+        }
+        #headline {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 48px;
+            color: #000;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+    <div id="headline">Cookies!</div>
+<script>
+let buttons = [];
+let padding = 20;
+let buttonWidth = 130;
+let buttonHeight = 30;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight); // Make the canvas fit the screen size
+  textAlign(CENTER, CENTER);
+  rectMode(CENTER);
+
+  // Set modern font
+  textFont('Trebuchet MS');
+
+  // Initialize two buttons with their label and centered positions
+  buttons.push(new HoverButton("Accept", width / 2 - 150, height / 2));
+  buttons.push(new HoverButton("Don't Accept", width / 2 + 150, height / 2));
+}
+
+function draw() {
+  background(255); // White background
+
+  // Update and display all buttons
+  for (let btn of buttons) {
+    btn.update(mouseX, mouseY); // Pass the mouse position to check if it hovers over the button
+    btn.show();
+  }
+}
+
+// Button class to manage position, movement, and hovering behavior
+class HoverButton {
+  constructor(label, x, y) {
+    this.label = label;
+    this.x = x;
+    this.y = y;
+  }
+
+  // Randomize position within the canvas with padding
+  randomizePosition() {
+    this.x = random(padding + buttonWidth / 2, width - padding - buttonWidth / 2);
+    this.y = random(padding + buttonHeight / 2, height - padding - buttonHeight / 2);
+  }
+
+  // Check if the button is hovered over
+  update(mx, my) {
+    if (mx > this.x - buttonWidth / 2 && mx < this.x + buttonWidth / 2 && my > this.y - buttonHeight / 2 && my < this.y + buttonHeight / 2) {
+      this.randomizePosition(); // Move to a new random position when hovered over
+    }
+  }
+
+  // Display the button
+  show() {
+    fill(0); // Black button
+    rect(this.x, this.y, buttonWidth, buttonHeight); // No rounded corners
+
+    fill(255); // White text
+    textSize(14);
+    text(this.label, this.x, this.y);
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+</body>
+</html>
